@@ -112,7 +112,13 @@ fn main() {
 /// `Ok()` and PathBuf to llvm-config, `Err()` otherwise
 fn search_llvm_config() -> Result<PathBuf> {
     let prefix = env::var(ENV_LLVM_PREFIX)
-        .map(|p| PathBuf::from(p).join("bin"))
+        .and_then(|p| {
+            if p.is_empty() {
+                return Err(std::env::VarError::NotPresent);
+            }
+
+            Ok(PathBuf::from(p).join("bin"))
+        })
         .unwrap_or_else(|_| PathBuf::new());
 
     for name in llvm_config_binary_names() {
