@@ -131,6 +131,7 @@ fn search_llvm_config() -> Result<PathBuf> {
         if version != "18" {
             return Err(anyhow!("LLVM major version is {}, must be 18.", version));
         }
+
         return Ok(llvm_config);
     }
 
@@ -145,10 +146,11 @@ fn search_llvm_config() -> Result<PathBuf> {
 }
 
 fn get_major_version(binary: &Path) -> Result<String> {
-    Ok(llvm_config(binary, ["--version"])
+    Ok(llvm_config_ex(binary, ["--version"])
+        .context("Extracting LLVM major version")?
         .split('.')
         .next()
-        .expect("Unexpected llvm output")
+        .expect("Unexpected llvm-config output.")
         .to_owned())
 }
 
