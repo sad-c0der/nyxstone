@@ -25,14 +25,14 @@ jobs:
         brew install llvm@18
     - name: Code quality
       run: |
-        cargo fmt --all -- --check
-        cargo clippy -- -D warnings
+        NYXSTONE_LLVM_PREFIX="$(brew --prefix llvm@18)" cargo fmt --all -- --check
+        NYXSTONE_LLVM_PREFIX="$(brew --prefix llvm@18)" cargo clippy -- -D warnings
       working-directory: ${{ env.working-dir }}
     - name: Build
-      run: RUSTFLAGS="-L$(brew --prefix zstd)/lib" NYXSTONE_LLVM_PREFIX="$(brew --prefix llvm@18)" NYXSTONE_LINK_FFI=1 cargo build
+      run: NYXSTONE_LLVM_PREFIX="$(brew --prefix llvm@18)" cargo build
       working-directory: ${{ env.working-dir }}
     - name: Run tests
-      run: RUSTFLAGS="-L$(brew --prefix zstd)/lib" NYXSTONE_LLVM_PREFIX="$(brew --prefix llvm@18)" NYXSTONE_LINK_FFI=1 cargo test
+      run: NYXSTONE_LLVM_PREFIX="$(brew --prefix llvm@18)" cargo test
       working-directory: ${{ env.working-dir }}
 
   mac:
