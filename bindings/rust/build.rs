@@ -46,7 +46,9 @@ fn main() {
     // === The following code is adapted from llvm-sys, see below for licensing ===
     let llvm_config_path = match search_llvm_config() {
         Ok(config) => config,
-        Err(e) => panic!("{e} Please either install LLVM 18 with static libs into your PATH or supply the location via $NYXSTONE_LLVM_PREFIX"),
+        Err(e) => {
+            panic!("{e} Please either install LLVM 18 into your PATH or supply the location via $NYXSTONE_LLVM_PREFIX")
+        }
     };
 
     // Tell cargo about the library directory of llvm.
